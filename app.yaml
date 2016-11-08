@@ -1,0 +1,36 @@
+application: mgh-rrt
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+
+handlers:
+- url: /show
+  script: app.app
+  login: required
+
+- url: /addwhohash
+  script: app.app
+  
+  
+- url: /
+  script: app.app
+
+- url: /index.html
+  static_files: static/index.html
+  upload: static/index.html
+
+- url: /img
+  static_dir: static/img
+
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+
+libraries:
+- name: jinja2
+  version: latest
+
+- name: ssl
+  version: latest
