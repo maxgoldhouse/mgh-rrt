@@ -24,10 +24,6 @@ handlers:
 - url: /img
   static_dir: static/img
 
-- url: /favicon.ico
-  static_files: favicon.ico
-  upload: favicon.ico
-
 libraries:
 - name: jinja2
   version: latest
