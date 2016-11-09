@@ -114,6 +114,6 @@ app = webapp2.WSGIApplication(
                                       ('/',addrrt),
                                       ('/show/rrts',displayrrts),
                                       ('/addwhohash',addwhohash),
-                                      ('/who/([a-zA-Z0-9_\s-]+)'),getwhofromhash)
+                                      ('/who/([a-zA-Z0-9_\s-]+)',getwhofromhash)
                                      ],
                                      debug=True)
