@@ -106,8 +106,14 @@ class getwhofromhash(BaseHandler):
       whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
       if whoRtn:
 	    for i in whoRtn:
-  	      self.response.out.write('this is '+trigger+' '+i.who)
-  	      
+	      self.response.headers['Content-Type'] = 'application/json'
+	      self.response.out.write('{"email": "'+i.who+'"}')
+  	      #self.render_template('propsjson.json', {'propsrequested': propsrequested})
+      else:
+  	    self.response.headers['Content-Type'] = 'application/json'
+  	    self.response.out.write('{"email": "error"}')
+  	    
+  	    
 app = webapp2.WSGIApplication(
                                      [
                                       ('/',addrrt),
