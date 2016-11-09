@@ -103,7 +103,7 @@ class getwhofromhash(BaseHandler):
   	      self.response.out.write('this is '+i.who)    	
     
     
-    def post(self, thewhohash)
+    def post(self, thewhohash):
       whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
       if whoRtn:
 	    for i in whoRtn:
