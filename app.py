@@ -66,6 +66,7 @@ class addrrt(BaseHandler):
 
         newrrt = mghrrt(
             whohash = self.request.get('a'),
+            who = getemailfromhash(whohash),
             what = self.request.get('b'),
             when = datetime.datetime.now() # .date() self.request.get('created'),
             )
@@ -73,6 +74,13 @@ class addrrt(BaseHandler):
         newrrt.put()
         self.redirect(str(self.request.get('b')))
 
+    def getemailfromhash(hash):
+      whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
+      if whoRtn:
+	    for i in whoRtn:
+	      emailaddress = i.who   
+
+      return emailaddress
 
 class addwhohash(BaseHandler):
 

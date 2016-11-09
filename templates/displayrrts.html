@@ -5,7 +5,7 @@
 <tr><th>Who</th><th>What</th><th>When</th></tr>
 {% for rrt in therrts %}
 <tr>
-<td class='hash'>{{rrt['whohash']}}</td><td>{{rrt['what']}}</td><td>{{rrt['when']}}</td>
+<td class='hash' hash='{{rrt['whohash']}}'>{{rrt['who']}}</td><td>{{rrt['what']}}</td><td>{{rrt['when']}}</td>
 </tr>
 {% endfor %}
 </table>
