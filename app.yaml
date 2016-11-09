@@ -6,7 +6,7 @@ threadsafe: true
 
 
 handlers:
-- url: /show
+- url: /show/rrts
   script: app.app
   login: required
 

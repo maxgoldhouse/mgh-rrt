@@ -81,10 +81,11 @@ class addwhohash(BaseHandler):
         h.update(self.request.get('a'))
         whash = h.hexdigest()
         dowehaveit = ndb.gql("SELECT * FROM mghwhohash WHERE whohash = :1",whash).fetch()
-        for i in dowehaveit:
-                self.response.out.write(i.whohash)
+        if dowehaveit:
+	        for i in dowehaveit:
+	                self.response.out.write('had it '+i.whohash)
                 
-        if not dowehaveit:
+        else:
 	        newwhohash = mghwhohash(
 	            whohash = whash,
 	            who = self.request.get('a'),
@@ -92,7 +93,7 @@ class addwhohash(BaseHandler):
 	            )
 	
 	        newwhohash.put() 
-	        self.response.out.write(whash)
+	        self.response.out.write('did not have it '+whash)
 
 app = webapp2.WSGIApplication(
                                      [
