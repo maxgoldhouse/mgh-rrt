@@ -94,11 +94,31 @@ class addwhohash(BaseHandler):
 	
 	        newwhohash.put() 
 	        self.response.out.write('did not have it '+whash)
-
+	        
+class getwhofromhash(BaseHandler):
+    def post(self, thewhohash):
+      self.returnthewho(thewhohash,'post')    	
+    
+    def get(self, thewhohash):
+      self.returnthewho(thewhohash,'get')
+      
+    def returnthewho(self, thewhohash,trigger):
+      whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
+      if whoRtn:
+	    for i in whoRtn:
+	      self.response.headers['Content-Type'] = 'application/json'
+	      self.response.out.write('{"email": "'+i.who+'"}')
+  	      #self.render_template('propsjson.json', {'propsrequested': propsrequested})
+      else:
+  	    self.response.headers['Content-Type'] = 'application/json'
+  	    self.response.out.write('{"email": "error"}')
+  	    
+  	    
 app = webapp2.WSGIApplication(
                                      [
                                       ('/',addrrt),
                                       ('/show/rrts',displayrrts),
-                                      ('/addwhohash',addwhohash)
+                                      ('/addwhohash',addwhohash),
+                                      ('/who/([a-zA-Z0-9_\s-]+)',getwhofromhash)
                                      ],
                                      debug=True)

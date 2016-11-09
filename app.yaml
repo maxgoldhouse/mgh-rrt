@@ -12,7 +12,10 @@ handlers:
 
 - url: /addwhohash
   script: app.app
-  
+
+- url: /who/.*
+  script: app.app
+  #login: required  
   
 - url: /
   script: app.app
