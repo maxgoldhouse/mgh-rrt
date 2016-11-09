@@ -62,8 +62,8 @@ class displayrrts(BaseHandler):
 
 class addrrt(BaseHandler):
 
-    def getemailfromhash(hash):
-      whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
+    def getemailfromhash(self,hash):
+      whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",hash).fetch()
       if whoRtn:
 	    for i in whoRtn:
 	      emailaddress = i.who   
@@ -74,7 +74,7 @@ class addrrt(BaseHandler):
 
         newrrt = mghrrt(
             whohash = self.request.get('a'),
-            who = getemailfromhash(whohash),
+            who = self.getemailfromhash(whohash),
             what = self.request.get('b'),
             when = datetime.datetime.now() # .date() self.request.get('created'),
             )
