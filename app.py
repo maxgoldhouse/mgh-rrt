@@ -74,7 +74,7 @@ class addrrt(BaseHandler):
 
         newrrt = mghrrt(
             whohash = self.request.get('a'),
-            who = self.getemailfromhash(whohash),
+            who = self.getemailfromhash(self.request.get('a')),
             what = self.request.get('b'),
             when = datetime.datetime.now() # .date() self.request.get('created'),
             )
