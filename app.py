@@ -96,18 +96,17 @@ class addwhohash(BaseHandler):
 	        self.response.out.write('did not have it '+whash)
 	        
 class getwhofromhash(BaseHandler):
-    def get(self, thewhohash):
-      whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
-      if whoRtn:
-	    for i in whoRtn:
-  	      self.response.out.write('this is '+i.who)    	
-    
-    
     def post(self, thewhohash):
+      self.returnthewho(thewhohash,'post')    	
+    
+    def get(self, thewhohash):
+      self.returnthewho(thewhohash,'get')
+      
+    def returnthewho(self, thewhohash,trigger):
       whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
       if whoRtn:
 	    for i in whoRtn:
-  	      self.response.out.write('this is '+i.who)
+  	      self.response.out.write('this is '+trigger+' '+i.who)
   	      
 app = webapp2.WSGIApplication(
                                      [
