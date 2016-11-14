@@ -55,32 +55,41 @@ class BaseHandler(webapp2.RequestHandler):
 
 class displayrrts(BaseHandler):
 
-    def get(self):
-        therrts = ndb.gql("SELECT * FROM mghrrt ORDER BY when DESC")
+    def post(self):
+        emailaddress = self.request.get('email')
+        therrts = ndb.gql("SELECT * FROM mghrrt WHERE who = :1 ORDER BY when DESC",emailaddress)
         self.response.headers['Content-Type'] = 'text/html'
         self.render_template('displayrrts.html', {'therrts': therrts})
+
+    def get(self):
+        self.render_template('rrtfinderform.html', {})
+
 
 class addrrt(BaseHandler):
 
     def getemailfromhash(self,hash):
       whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",hash).fetch()
       if whoRtn:
-	    for i in whoRtn:
-	      emailaddress = i.who   
-
-      return emailaddress
+        for i in whoRtn:
+          emailaddress = i.who
+        return emailaddress
+      else:
+        return 'no email'
 
     def get(self):
 
-        newrrt = mghrrt(
+      if self.request.get('a') == '' or self.request.get('b') == '' or self.getemailfromhash(self.request.get('a')) == 'no email':
+          self.response.out.write('error')
+      else:
+         newrrt = mghrrt(
             whohash = self.request.get('a'),
             who = self.getemailfromhash(self.request.get('a')),
             what = self.request.get('b'),
             when = datetime.datetime.now() # .date() self.request.get('created'),
-            )
+         )
 
-        newrrt.put()
-        self.redirect(str(self.request.get('b')))
+         newrrt.put()
+         self.redirect(str(self.request.get('b')))
 
 
 class addwhohash(BaseHandler):
@@ -92,25 +101,25 @@ class addwhohash(BaseHandler):
         dowehaveit = ndb.gql("SELECT * FROM mghwhohash WHERE whohash = :1",whash).fetch()
         if dowehaveit:
 	        for i in dowehaveit:
-	                self.response.out.write('had it '+i.whohash)
-                
+	                self.response.out.write(i.whohash)
+
         else:
 	        newwhohash = mghwhohash(
 	            whohash = whash,
 	            who = self.request.get('a'),
 	            when = datetime.datetime.now() # .date() self.request.get('created'),
 	            )
-	
-	        newwhohash.put() 
-	        self.response.out.write('did not have it '+whash)
-	        
+
+	        newwhohash.put()
+	        self.response.out.write(whash)
+
 class getwhofromhash(BaseHandler):
     def post(self, thewhohash):
-      self.returnthewho(thewhohash,'post')    	
-    
+      self.returnthewho(thewhohash,'post')
+
     def get(self, thewhohash):
       self.returnthewho(thewhohash,'get')
-      
+
     def returnthewho(self, thewhohash,trigger):
       whoRtn = ndb.gql("SELECT who FROM mghwhohash WHERE whohash = :1",thewhohash).fetch()
       if whoRtn:
@@ -121,12 +130,12 @@ class getwhofromhash(BaseHandler):
       else:
   	    self.response.headers['Content-Type'] = 'application/json'
   	    self.response.out.write('{"email": "error"}')
-  	    
-  	    
+
+
 app = webapp2.WSGIApplication(
                                      [
                                       ('/',addrrt),
-                                      ('/show/rrts',displayrrts),
+                                      ('/show',displayrrts),
                                       ('/addwhohash',addwhohash),
                                       ('/who/([a-zA-Z0-9_\s-]+)',getwhofromhash)
                                      ],
