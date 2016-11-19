@@ -17,12 +17,14 @@ handlers:
   script: app.app
   #login: required
 
-- url: /
-  script: app.app
-
 - url: /index.html
   static_files: static/index.html
   upload: static/index.html
+
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
 
 - url: /img
   static_dir: static/img

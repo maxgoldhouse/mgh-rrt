@@ -1,0 +1,18 @@
+{% for item in propsrequested %}
+<table style="max-width:800px;">
+<tr>
+  <td style="padding:5px;"><img style="padding: 3px; border: 1px solid #ccc" src='{{item['images'][0]|replace("/s0/", "/s180/")|replace("/s640/", "/s180/")}}'/></td>
+  <td style="padding:5px;">
+   <div class="ptype left"><b>{{item['ptype']}} - {{item['location']}}</b> (Ref: {{item['ref']}})</div>
+
+    {% if item['frequency'] == 'week' %} from {% endif %}€{{"{:,}".format(item['price'])}} {% if item['rental']  %}{{item['frequency']}} (rental){% endif %}<br/>
+    <p>{{item['description']|truncate(200)}} ...</p>
+    Bedrooms: <b>{{item['beds']}}</b> Bathrooms: <b>{{item['baths']}}</b> Pool: <b>{{item['pool']}}</b><br/>
+    <!--<img style="vertical-align: baseline" src="http://props.maxgoldhouse.com//img/bed.jpg"/> {{item['beds']}} <img style="vertical-align: baseline" src="http://props.maxgoldhouse.com/img/bath.jpg"/> {{item['baths']}}<img src="http://props.maxgoldhouse.com/img/poolyes.jpg"/> {{item['pool']}}<br/> -->
+    <a href="https://mgh-rrt.appspot.com?a={{ whohash }}&b=https://sites.google.com/a/maxgoldhouse.com/infozone/photo-brochures/{{item['ref']}}.pdf">View Brochure</a> or
+    <a href="https://mgh-rrt.appspot.com?a={{ whohash }}&b=https://www.maxgoldhouse.com/{{item['beds']}}-bed-{{item['ptype']|replace(" ", "-") }}-in-{{item['location']|replace(" ", "-") }}-{{item['pid']}}.html">View on maxgoldhouse.com</a><br/>
+  </td>
+</tr>
+</table>
+<br/>
+{% endfor %}
