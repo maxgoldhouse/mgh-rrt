@@ -10,6 +10,9 @@ handlers:
   script: app.app
   login: required
 
+- url: /
+  script: app.app
+
 - url: /addwhohash
   script: app.app
 
